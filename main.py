@@ -1,11 +1,25 @@
+import os
+
+from dotenv import load_dotenv
 from ib_async import IB
+
+load_dotenv()
 
 
 def main():
 
-    # Connect to TWS or IB Gateway
+    # Connect to IB Gateway
     ib = IB()
-    ib.connect('192.168.178.231', 4002, clientId=1)
+
+    HOST = os.getenv('IBG_HOST', '127.0.0.1')
+    PORT = int(os.getenv('IBG_PORT', '4002'))
+    CLIENT_ID = int(os.getenv('IBG_CLIENT_UD', '1'))
+
+    ib.connect(
+        host=HOST,
+        port=PORT,
+        clientId=CLIENT_ID,
+    )
     print("Connected")
 
     # Disconnect when done
