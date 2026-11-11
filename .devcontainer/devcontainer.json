@@ -1,16 +1,26 @@
 {
-    "name": "Python 3.14 App with uv",
+    "name": "Trading bot",
     "image": "mcr.microsoft.com/devcontainers/python:3.14",
     "features": {
-        "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {}
+        "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
+        "ghcr.io/jsburckhardt/devcontainer-features/ruff:1": {},
+        "ghcr.io/devcontainers/features/node:2.1.2": {
+            "version": "lts"
+        },
+        "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
+    },
+    // Persist Claude Code authentication, history, and config across container rebuilds
+    "mounts": [
+        "source=claude-code-config,target=/home/vscode/.claude,type=volume"
+    ],
+    // Set environment variables for non-interactive logins and custom config directories
+    "containerEnv": {
+        "CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
     },
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-python.python",
-                "ms-python.vscode-pylance",
-                "ms-python.debugpy",
-                "charliermarsh.ruff"
+                "ms-python.python"
             ],
             "settings": {
                 "python.defaultInterpreterPath": "/workspaces/${localWorkspaceFolderBasename}/.venv/bin/python",
@@ -18,5 +28,7 @@
             }
         }
     },
-    "postCreateCommand": "uv sync"
+    "postCreateCommand": "uv sync",
+    // Run as non-root user matching the default image username
+    "remoteUser": "vscode"
 }
