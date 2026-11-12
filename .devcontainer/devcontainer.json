@@ -11,11 +11,13 @@
     },
     // Persist Claude Code authentication, history, and config across container rebuilds
     "mounts": [
-        "source=claude-code-config,target=/home/vscode/.claude,type=volume"
+        "source=claude-code-config,target=/home/vscode/.claude,type=volume",
+        "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind"
     ],
     // Set environment variables for non-interactive logins and custom config directories
     "containerEnv": {
-        "CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
+        "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+        "DISPLAY": "${localEnv:DISPLAY}"
     },
     "customizations": {
         "vscode": {
